@@ -119,7 +119,7 @@ router.put('/:Client_ID/tradeagreement/', function (req, res, next) {
     if (!agreementType) {
         res.status(400).send({
             error: true,
-            message: 'Please provide HS'
+            message: 'Please provide agreements'
         });
         res.end();
         return
@@ -151,7 +151,7 @@ router.put('/:Client_ID/tradeagreement/', function (req, res, next) {
                 CreatedBy: userID
             }
 
-            dbConnection.query("INSERT INTO TradeAgreements SET ? ", copyAgreement, function (error, results, fields) {
+            dbConnection.query("INSERT INTO TradeAgreements SET = ? ", copyAgreement, function (error, results, fields) {
 
 
                 if (error) {
