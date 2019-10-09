@@ -32,8 +32,8 @@ router.get('/:Client_ID/stakeHolder/:ID', function (req, res, next) {
                 PaymentDue : results[0].PaymentDue,
                 Client_ID: results[0].Client_ID,
                 CreatedBy: results[0].CreatedBy,
-                IsDeleted: results[0].false,
-                IsActive: results[0].true,
+                IsDeleted: results[0].IsDeleted,
+                IsActive: results[0].IsActive,
                 Parent_ID: results[0].Parent_ID,
                 CntctDetail : [] 
 

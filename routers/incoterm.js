@@ -59,7 +59,7 @@ router.put('/:Client_ID/incoterm/', function(req, res, next) {
         }
 
         var incoterm = {
-            ID: req.body.ID,
+            ID: ID,
             Incoterm: req.body.Incoterm,
             Description: req.body.Description,
             Freight: req.body.Freight,
