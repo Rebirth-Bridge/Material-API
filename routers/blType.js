@@ -14,7 +14,7 @@ const schema = Joi.object().keys({
 
     router.get('/blType/', function (req, res, next) {
     console.log("blgetall");
-    dbConnection.query('SELECT * FROM BRIDGE.BlType; ', function(error, results, fields) {
+    dbConnection.query('SELECT * FROM BRIDGE.BlType ', function(error, results, fields) {
         if (error) return next (error);
         if(!results || results.length == 0) return res.status(HTTP_STATUS.NOT_FOUND).send();
         return res.send(results);
@@ -90,7 +90,8 @@ router.post('/blType/', function(req, res, next) {
 
 
 
-router.put('/blType/:ID', function(req, res, next) {
+//router.put('/blType/:ID', function(req, res, next) {
+    router.put('/blType/', function(req, res, next) {
 
     
     console.error( req.body)
@@ -99,7 +100,7 @@ router.put('/blType/:ID', function(req, res, next) {
     const ID =  uuidv4;
 
     Joi.validate(req.body, schema, (err, results) => {
-        console.error('4');
+        console.error('mApi4');
         if(err) {
             console.error(err);
             return res.status(HTTP_STATUS.BAD_REQUEST).send(err);
@@ -118,13 +119,13 @@ router.put('/blType/:ID', function(req, res, next) {
 
         
 
-        console.error('6');
+        console.error('mApi6');
 
         dbConnection.beginTransaction(function (err) {
-            console.error('7');
+            console.error('mApi7');
 
-            if (err) return next(err);
-                var query = dbConnection.query("UPDATE  BRIDGE.BlType SET ? WHERE ID = ? ", [blType, req.params.ID], function(errBltypes, result) {
+             if (err) return next(err);
+                var queryInsertPut = dbConnection.query("UPDATE  BRIDGE.BlType SET ? WHERE ID = ? ", [blType, req.params.ID], function(errBltypes, result) {
                 
                     if (errBltypes) {
                         dbConnection.rollback(function() {
@@ -132,7 +133,7 @@ router.put('/blType/:ID', function(req, res, next) {
                             return next(errBltypes);
                         })
                     }
-                    console.log(query.sql);
+                    console.log(queryInsertPut.sql);
                      console.error(result) 
 
                 dbConnection.commit(function(commitError) {
@@ -145,7 +146,7 @@ router.put('/blType/:ID', function(req, res, next) {
                 })
                 
                 })
-                console.log(query.sql);
+                console.log(queryInsertPut.sql);
 
                 return res.send(blType);
 

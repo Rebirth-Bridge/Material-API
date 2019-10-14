@@ -4,8 +4,8 @@ var dbConnection = require('./database');
 const Joi = require('@hapi/joi');
 
 
-router.get('/:Client_ID/stakeHolder/', function (req, res, next) {
-    dbConnection.query('SELECT * FROM Stakeholder WHERE Client_ID = ? AND IsActive = 1', req.params.Client_ID, function(error, results, fields) {
+router.get('/stakeHolder/', function (req, res, next) {
+    dbConnection.query('SELECT * FROM BRIDGE.Stakeholder',  function(error, results, fields) {
     //dbConnection.query('SELECT * FROM Stakeholder WHERE Client_ID = ?', req.params.Client_ID, function(error, results, fields) { 
     if (error) return next(error);
         if (!results || results.length == 0) return res.status(404).send()
@@ -13,8 +13,8 @@ router.get('/:Client_ID/stakeHolder/', function (req, res, next) {
     });
 });
 
-router.get('/:Client_ID/stakeHolder/:ID', function (req, res, next) {
-    dbConnection.query('SELECT * FROM Stakeholder WHERE Client_ID = ? AND IsActive = 1 AND ID = ?', [req.params.Client_ID, req.params.ID], function (error, results, fields) {
+router.get('/stakeHolder/:ID', function (req, res, next) {
+    dbConnection.query('SELECT * FROM BRIDGE.Stakeholder WHERE ID = ?', [req.params.ID], function (error, results, fields) {
         
         if(error) return next (error);
 
@@ -30,11 +30,6 @@ router.get('/:Client_ID/stakeHolder/:ID', function (req, res, next) {
                 TIN : results[0].TIN,
                 SwiftAddress : results[0].SwiftAddress,
                 PaymentDue : results[0].PaymentDue,
-                Client_ID: results[0].Client_ID,
-                CreatedBy: results[0].CreatedBy,
-                IsDeleted: results[0].IsDeleted,
-                IsActive: results[0].IsActive,
-                Parent_ID: results[0].Parent_ID,
                 CntctDetail : [] 
 
                }
@@ -70,8 +65,8 @@ router.post('/:Client_ID/stakeHolder', function (req, res) {
     }
 
     const uuidv4 = require('uuid/v4')
-    let userID = req.header('InitiatedBy')
-    let clientID = req.header('Client_ID')
+    // let userID = req.header('InitiatedBy')
+    // let clientID = req.header('Client_ID')
     let Stake_ID = uuidv4();
 
     var Contacts = staHolder.Contacts
@@ -86,10 +81,10 @@ router.post('/:Client_ID/stakeHolder', function (req, res) {
         TIN : staHolder.TIN,
         SwiftAddress : staHolder.SwiftAddress,
         PaymentDue : staHolder.PaymentDue,
-        Client_ID: clientID,
-        Created_By: userID,
-        IsDeleted: staHolder.false,
-        IsActive: 1
+        // Client_ID: clientID,
+        // Created_By: userID,
+        // IsDeleted: staHolder.false,
+        // IsActive: 1
     } 
 
  var postsql =    dbConnection.query("INSERT INTO Stakeholder SET ?", sholder, function (error, results, fields) {
@@ -115,7 +110,6 @@ router.post('/:Client_ID/stakeHolder', function (req, res) {
                                 CDOtherContactDetails : Contacts[k].CDOtherContactDetails,
                                 CDCompanyName : Contacts[k].CDCompanyName,
                                 Stakeholder_ID : Stake_ID,
-                                IsActive : Contacts[k].IsActive
                         }
 
                         dbConnection.query("INSERT INTO SHContactDetails SET ?", contact, function (error, results, fields) {
@@ -147,10 +141,10 @@ router.post('/:Client_ID/stakeHolder', function (req, res) {
 });
 
 
-router.put('/:Client_ID/stakeHolder', function (req, res) {
+router.put('/stakeHolder/', function (req, res) {
 
     let sholder = req.body;
-    let ParentID = sholder.ID;
+    //let ParentID = sholder.ID;
 
     if(!sholder) {
         res.status(400).send({
@@ -167,7 +161,7 @@ router.put('/:Client_ID/stakeHolder', function (req, res) {
             throw err;
         }
 
-        dbConnection.query("UPDATE BRIDGE.Stakeholder SET IsActive = 0 WHERE ID =?", ParentID, function(error, results, fields) {
+        dbConnection.query("UPDATE BRIDGE.Stakeholder SET ? WHERE ID =?", function(error, results, fields) {
             if (error) {
                 dbConnection.rollback(function() {
                     res.status(500).send(error);
@@ -177,8 +171,8 @@ router.put('/:Client_ID/stakeHolder', function (req, res) {
             }
 
             const uuidv4 = require('uuid/v4')
-            let userID = req.header('InitiatedBy')
-            let clientID = req.header('Client_ID')
+            // let userID = req.header('InitiatedBy')
+            // let clientID = req.header('Client_ID')
             let Stake_ID = uuidv4();
 
            // var Contact = sholder.CntctDetail
@@ -192,11 +186,11 @@ router.put('/:Client_ID/stakeHolder', function (req, res) {
                 TIN : sholder.TIN,
                 SwiftAddress : sholder.SwiftAddress,
                 PaymentDue : sholder.PaymentDue,
-                Client_ID: clientID,
-                Created_By: userID,
-                IsDeleted: sholder.false,
-                IsActive: 1,
-                Parent_ID : sholder.ID
+                // Client_ID: clientID,
+                // Created_By: userID,
+                // IsDeleted: sholder.false,
+                // IsActive: 1,
+                // Parent_ID : sholder.ID
 
             }
 
