@@ -52,7 +52,7 @@ router.post('/blType/', function(req, res, next) {
     Joi.validate(req.body, schema, (err, results) => {
         if(err) {
             console.error(err);
-            return res.status(HTTP_Status.BAD_REQUEST).send(err);
+            return res.status(HTTP_STATUS.BAD_REQUEST).send(err);
         }
 
         var blType = {
@@ -125,7 +125,7 @@ router.post('/blType/', function(req, res, next) {
             console.error('mApi7');
 
              if (err) return next(err);
-                var queryInsertPut = dbConnection.query("UPDATE  BRIDGE.BlType SET ? WHERE ID = ? ", [blType, req.params.ID], function(errBltypes, result) {
+                var queryInsertPut = dbConnection.query("UPDATE  BRIDGE.BlType SET ? WHERE ID = ? ", [blType, req.body.ID], function(errBltypes, result) {
                 
                     if (errBltypes) {
                         dbConnection.rollback(function() {
