@@ -30,7 +30,7 @@ router.get('/:Client_ID/regapproval/:id', function (req, res) {
                                 ObtainingStage: results[0].ObtainingStage,
                                 IsActive: results[0].IsActive,
                                 Parent_ID: results[0].Parent_ID,
-                                Created_By: results[0].CreatedBy,
+                                Created_By: results[0].Created_By,
                                 CreatedTime: results[0].CreatedTime,
                                 Attachments: []}
   
@@ -181,7 +181,7 @@ router.put('/:Client_ID/regapproval', function (req, res) {
                 ObtainingStage: regApproval.ObtainingStage,
                 IsActive: 1,
                 Parent_ID : regApproval.ID, 
-                CreatedBy: userID
+                Created_By: userID
             }
 
             var putsql =  dbConnection.query("INSERT INTO BRIDGE.RegulatoryApproval SET  ? ", copyRegApprovall, function (error, results, fields) {

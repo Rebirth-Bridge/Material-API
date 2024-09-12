@@ -45,8 +45,6 @@ app.use(taxMapRoutes);
 const blTypeRoutes = require('./routers/blType')
 app.use(blTypeRoutes);
 
-//const bTypeRoutes = require('./routers/bType')
-//app.use(bTypeRoutes);
 
 const stakeHolder = require('./routers/stakeHolder')
 app.use(stakeHolder);
